@@ -3,17 +3,13 @@
   otherwise expects to-be-deprecated 'dig_objs' as an array of hashes
 <!-- /comment --><% end  %>
 
-<div class="row">
 <% if AppConfig[:enable_representative_file_version] && rep_fv.present? %>
-<div id="viewer-container" class="images">
   <div class="objectimage">
     <div class="panel panel-default">
       <%= render partial: 'shared/representative_file_version', locals: {:uri => rep_fv['file_uri'], :caption => rep_fv['caption']} %>
     </div>
   </div>
-</div>
 <% elsif dig_objs.present? %>
-<div id="viewer-container" class="images"> 
   <% dig_objs.each do |d_file| %>
     <% if !d_file['out'].blank? %>
       <% if d_file['thumb'].blank? %>
@@ -46,7 +42,9 @@
       <% end %>
     <% elsif !d_file['thumb'].blank? %>
       <% if d_file['thumb'].include? "manifest.json" %>
-        <div id="my-mirador"/>
+        <div id="viewer-container">
+          <div id="my-mirador"/>
+        </div>
         <script type="text/javascript">
           var mirador = Mirador.viewer({
             "id": "my-mirador",
@@ -82,6 +80,4 @@
       <% end %>
     <% end %>
   <% end %>
-</div>
 <% end %>
-</div>
