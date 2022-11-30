@@ -73,6 +73,8 @@
             }
           });
         </script>
+      <% elsif d_file['thumb'].include? "kaltura.com" %>
+        <%= render partial: 'shared/kaltura', locals: { :object => d_file['thumb'] } %>
       <% else %>
         <div class="objectimage">
           <img src="<%= d_file['thumb'] %>" alt="<%=  strip_mixed_content(d_file['caption'] || t('digital_object._public.thumbnail')) %>" />
