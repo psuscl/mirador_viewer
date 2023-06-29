@@ -1,0 +1,42 @@
+<% if AppConfig[:enable_mirador] == true %>
+  <div id="viewer-container">
+    <div id="my-mirador"/>
+    </div>
+    <script type="text/javascript">
+      var mirador = Mirador.viewer({
+        "id": "my-mirador",
+        "manifests": {
+          "<%= img_uri %>": {
+            "provider": "Penn State University Libraries"
+          }
+        },
+        "windows": [
+          {
+            "loadedManifest": "<%= img_uri %>",
+            "thumbnailNavigationPosition": "far-bottom",
+            "view": "single",
+            "allowClose": false,
+            "allowMaximize": false
+          }
+        ],
+        "window": {
+          "sideBarOpen": true
+        },
+        "workspace": {
+          "type": "mosaic"
+        },
+        "workspaceControlPanel": {
+          "enabled": false
+        }
+      });
+    </script>
+  </div>
+<% else %>
+  <div class="panel panel-default"
+    <%= render partial: 'shared/representative_file_version_record', locals: {
+      :a_uri => a_uri,
+      :img_uri => img_uri,
+      :caption => rfv['caption']
+    } %>
+  </div>
+<% end %>
