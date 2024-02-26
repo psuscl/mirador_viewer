@@ -1,0 +1,11 @@
+<% if AppConfig[:enable_contentdm] == true %>
+  <audio src="<%= img_uri %>" controls=""></audio>
+<% else %>
+  <div class="panel panel-default">
+    <%= render partial: 'shared/representative_file_version_record', locals: {
+      :a_uri => a_uri,
+      :img_uri => img_uri,
+      :caption => rfv['caption']
+    } %>
+  </div>
+<% end %>

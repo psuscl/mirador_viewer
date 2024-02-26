@@ -17,6 +17,12 @@
         :img_uri => img_uri,
         :caption => rfv['caption']
       } %>
+    <% elsif img_uri.include? "contentdm.oclc.org" %>
+      <%= render partial: 'shared/contentdm', locals: {
+        :a_uri => a_uri,
+        :img_uri => img_uri,
+        :caption => rfv['caption']
+      } %>
     <% else %>
       <div class="panel panel-default">
         <%= render partial: 'shared/representative_file_version_record', locals: {

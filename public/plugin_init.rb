@@ -6,3 +6,4 @@ end
 
 AppConfig[:enable_mirador] = true
 AppConfig[:enable_kaltura] = true
+AppConfig[:enable_contentdm] = true
