@@ -1,49 +1,67 @@
 <% if record['json']['representative_file_version'].present? %>
   <div class="objectimage">
-    <%
-      rfv = record['json']['representative_file_version']
-      img_uri = rfv['file_uri']
-      a_uri = rfv['derived_from'] || rfv['link_uri']
-    %>
-    <% if img_uri.include? "manifest.json" %>
-      <%= render partial: 'shared/mirador', locals: {
-        :a_uri => a_uri,
-        :img_uri => img_uri,
-        :caption => rfv['caption']
-      } %>
-    <% elsif img_uri.include? "kaltura.com" %>
-      <%= render partial: 'shared/kaltura', locals: {
-        :a_uri => a_uri,
-        :img_uri => img_uri,
-        :caption => rfv['caption']
-      } %>
-    <% elsif img_uri.include? "contentdm.oclc.org" %>
-      <%= render partial: 'shared/contentdm', locals: {
-        :a_uri => a_uri,
-        :img_uri => img_uri,
-        :caption => rfv['caption']
-      } %>
-    <% else %>
-      <div class="panel panel-default">
-        <%= render partial: 'shared/representative_file_version_record', locals: {
+    <div class="card">
+      <%
+        rfv = record['json']['representative_file_version']
+        img_uri = rfv['file_uri']
+        a_uri = rfv['derived_from'] || rfv['link_uri']
+        dig_materials_link = nil
+
+        if representative_link_to_digital_materials?(record)
+          digitized_link_text = t(
+            'digital_object._public.browse_number_digital_objects_in_collection',
+            num: n_digital_objects,
+            count: n_digital_objects
+          )
+          dig_materials_link = link_to digitized_link_text,
+            app_prefix("/repositories/#{params[:rid]}/resources/#{params[:id]}/digitized"),
+            data: { 'view-all-digital-objects' => true }
+        end
+      %>
+      <% if img_uri.include? "manifest.json" %>
+        <%= render partial: 'shared/mirador', locals: {
           :a_uri => a_uri,
           :img_uri => img_uri,
-          :caption => rfv['caption']
+          :caption => rfv['caption'],
+          :dig_materials_link => dig_materials_link
         } %>
-      </div>
-    <% end %>
-    <% if representative_link_to_digital_materials?(record) %>
-      <% digitized_link_text = t(
-        'digital_object._public.browse_number_digital_objects_in_collection',
-        num: n_digital_objects
-      ) %>
-      <p class="mb0 pb1 rounded-bottom bg-lightgray">
-        <% link_to digitized_link_text,
-          app_prefix("/repositories/#{params[:rid]}/resources/#{params[:id]}/digitized"),
-          class: 'view-all'
-        %>
-      </p>
-    <% end %>
+      <% elsif img_uri.include? "kaltura.com" %>
+        <%= render partial: 'shared/kaltura', locals: {
+          :a_uri => a_uri,
+          :img_uri => img_uri,
+          :caption => rfv['caption'],
+          :dig_materials_link => dig_materials_link
+        } %>
+      <% elsif img_uri.include? "contentdm.oclc.org" %>
+        <%= render partial: 'shared/contentdm', locals: {
+          :a_uri => a_uri,
+          :img_uri => img_uri,
+          :caption => rfv['caption'],
+          :dig_materials_link => dig_materials_link
+        } %>
+      <% else %>
+        <div class="panel panel-default">
+          <%= render partial: 'shared/representative_file_version_record', locals: {
+            :a_uri => a_uri,
+            :img_uri => img_uri,
+            :caption => rfv['caption'],
+            :dig_materials_link => dig_materials_link
+          } %>
+        </div>
+      <% end %>
+      <% if representative_link_to_digital_materials?(record) %>
+        <% digitized_link_text = t(
+          'digital_object._public.browse_number_digital_objects_in_collection',
+          num: n_digital_objects
+        ) %>
+        <p class="mb0 pb1 rounded-bottom bg-lightgray">
+          <% link_to digitized_link_text,
+            app_prefix("/repositories/#{params[:rid]}/resources/#{params[:id]}/digitized"),
+            class: 'view-all'
+          %>
+        </p>
+      <% end %>
+    </div>
   </div>
 <% elsif local_assigns[:dig_objs] && dig_objs.present? %>
   <% dig_objs.each do |d_file| %>
@@ -63,12 +81,12 @@
                           '(sound_recording_nonmusical)' => 'fa-file-audio-o' ,
                           '(still_image)' => 'fa-file-image-o' ,
                           '(text)' =>  'fa-file-text-o'}.fetch( d_file['material'], 'fa-file-o' ) %> fa-4x"></i>
-              <h5 class="ws-normal">
+              <h2 class="ws-normal">
                 <%= d_file['caption'].blank? ? "#{t('enumerations.instance_instance_type.digital_object')} #{d_file['material']}" : d_file['caption'].html_safe %>
-              </h5>
-              <p class="external-digital-object__content-info">
+              </h2>
+              <div class="external-digital-object__content-info">
                 <%= t('digital_object._public.go') %> <i class="fa fa-external-link" aria-hidden="true"></i>
-              </p>
+              </div>
             </div>
           </a>
         </div>

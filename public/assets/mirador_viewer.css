@@ -9,3 +9,10 @@
   margin: 0 auto 15px;
   float: none;
 }
+
+/* this is an h2 but we should style it like an h5 */
+.objectimage .ws-normal { 
+  font-family: "Roboto Slab", serif;
+  font-size: 1.40625rem;
+  color: var(--bs-heading-color);
+}
